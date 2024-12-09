@@ -13,6 +13,7 @@ import circleRouter from "./routes/circle.route.js";
 import commentRouter from "./routes/comment.route.js";
 import commentReplyRouter from "./routes/commentReply.route.js";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 
 dotenv.config();
 
@@ -28,12 +29,36 @@ mongoose
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
+app.use(
+  cors({
+    origin: "*",
+    // origin: [
+    //   "http://localhost:8081", // Your frontend URL
+    //   "http://192.168.0.155:8081", // Example IP address of a mobile app
+    // ],
+    methods: ["GET", "POST", "PUT", "DELETE"], // Include other methods if necessary
+    credentials: true, // Allow credentials if needed
+  })
+);
 
 const server = http.createServer(app);
 
 
 // Setup Socket.IO with the HTTP server
-const io = new Server(server); // <-- without cors
+// const io = new Server(server); // <-- without cors
+
+const io = new Server(server, {
+  // cors: {
+  //   origin: ["http://localhost:8081", "http://192.168.2.16:3000"],
+  //   methods: ["GET", "POST"],
+  //   credentials: true,
+  // },
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    credentials: true,
+  },
+});
 
 // with cors:
 // const allowedOrigins = [
