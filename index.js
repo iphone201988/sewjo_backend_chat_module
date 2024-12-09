@@ -88,6 +88,13 @@ io.on("connection", (socket) => {
   });
 });
 
+app.get("/", (_req, res) => {
+   res.status(200).json({
+    success: true,
+    message: "Welcome to theSewjo App Server chat module",
+   })
+})
+
 // Use routers
 app.use("/api/user", userRouter);
 app.use("/api/auth", authRouter);
